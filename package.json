@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-jeenee-ui",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Build Telegram UI components using DSL for Telegram bots",
 	"license": "MIT",
 	"homepage": "https://github.com/akainq/n8n-nodes-jeenee-ui#readme",
