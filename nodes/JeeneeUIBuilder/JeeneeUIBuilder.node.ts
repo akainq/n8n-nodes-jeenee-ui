@@ -1,8 +1,9 @@
-import {
+import type {
     IExecuteFunctions,
     INodeExecutionData,
     INodeType,
     INodeTypeDescription,
+    IDataObject,
 } from 'n8n-workflow';
 
 interface UIComponent {
@@ -579,7 +580,6 @@ export class JeeneeUiBuilder implements INodeType {
                 ],
             },
         ],
-        usableAsTool: true,
     };
 
     async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
@@ -636,11 +636,14 @@ export class JeeneeUiBuilder implements INodeType {
 
                         if (select.options && select.options.option) {
                             for (const opt of select.options.option as Array<Record<string, unknown>>) {
-                                options.push({
+                                const option: Record<string, unknown> = {
                                     label: opt.label,
                                     value: opt.value,
-                                    ...(opt.description && { description: opt.description }),
-                                });
+                                };
+                                if (opt.description) {
+                                    option.description = opt.description;
+                                }
+                                options.push(option);
                             }
                         }
 
@@ -658,37 +661,57 @@ export class JeeneeUiBuilder implements INodeType {
                             component.max_values = select.maxValues || 5;
                         }
 
-                        componentsArray.push(component);
+                        componentsArray.push(component as UIComponent);
                     }
                 }
 
                 // Process text edit
                 if (components.textEdit && components.textEdit.length > 0) {
                     for (const textEdit of components.textEdit) {
-                        componentsArray.push({
+                        const textEditComponent: UIComponent = {
                             kind: 'text_edit',
                             custom_id: textEdit.customId,
                             title: textEdit.title,
-                            ...(textEdit.saveLabel && { save_label: textEdit.saveLabel }),
-                            ...(textEdit.placeholder && { placeholder: textEdit.placeholder }),
-                            ...(textEdit.maxLength && { max_length: textEdit.maxLength }),
-                        });
+                        };
+                        if (textEdit.saveLabel) {
+                            textEditComponent.save_label = textEdit.saveLabel;
+                        }
+                        if (textEdit.placeholder) {
+                            textEditComponent.placeholder = textEdit.placeholder;
+                        }
+                        if (textEdit.maxLength) {
+                            textEditComponent.max_length = textEdit.maxLength;
+                        }
+                        componentsArray.push(textEditComponent);
                     }
                 }
 
                 // Process file upload
                 if (components.fileUpload && components.fileUpload.length > 0) {
                     for (const fileUpload of components.fileUpload) {
-                        componentsArray.push({
+                        const fileUploadComponent: UIComponent = {
                             kind: 'file_upload',
                             custom_id: fileUpload.customId,
-                            ...(fileUpload.title && { title: fileUpload.title }),
-                            ...(fileUpload.buttonLabel && { button_label: fileUpload.buttonLabel }),
-                            ...(fileUpload.multiple && { multiple: fileUpload.multiple }),
-                            ...(fileUpload.minFiles && { min_files: fileUpload.minFiles }),
-                            ...(fileUpload.maxFiles && { max_files: fileUpload.maxFiles }),
-                            ...(fileUpload.maxSizeMb && { max_size_mb: fileUpload.maxSizeMb }),
-                        });
+                        };
+                        if (fileUpload.title) {
+                            fileUploadComponent.title = fileUpload.title;
+                        }
+                        if (fileUpload.buttonLabel) {
+                            fileUploadComponent.button_label = fileUpload.buttonLabel;
+                        }
+                        if (fileUpload.multiple !== undefined) {
+                            fileUploadComponent.multiple = fileUpload.multiple;
+                        }
+                        if (fileUpload.minFiles) {
+                            fileUploadComponent.min_files = fileUpload.minFiles;
+                        }
+                        if (fileUpload.maxFiles) {
+                            fileUploadComponent.max_files = fileUpload.maxFiles;
+                        }
+                        if (fileUpload.maxSizeMb) {
+                            fileUploadComponent.max_size_mb = fileUpload.maxSizeMb;
+                        }
+                        componentsArray.push(fileUploadComponent);
                     }
                 }
 
@@ -703,19 +726,27 @@ export class JeeneeUiBuilder implements INodeType {
 
                                 if ((item.blocks as { block?: unknown[] })?.block) {
                                     for (const block of (item.blocks as { block: Array<Record<string, unknown>> }).block) {
-                                        blocks.push({
-                                            ...(block.role && { role: block.role }),
+                                        const blockObj: Record<string, unknown> = {
                                             content: block.content,
-                                        });
+                                        };
+                                        if (block.role) {
+                                            blockObj.role = block.role;
+                                        }
+                                        blocks.push(blockObj);
                                     }
                                 }
 
-                                items.push({
+                                const richItem: Record<string, unknown> = {
                                     custom_id: item.customId,
-                                    ...(item.label && { label: item.label }),
-                                    ...(item.emoji && { emoji: item.emoji }),
                                     blocks,
-                                });
+                                };
+                                if (item.label) {
+                                    richItem.label = item.label;
+                                }
+                                if (item.emoji) {
+                                    richItem.emoji = item.emoji;
+                                }
+                                items.push(richItem);
                             }
                         }
 
@@ -784,26 +815,32 @@ export class JeeneeUiBuilder implements INodeType {
                 // Process progress
                 if (components.progress && components.progress.length > 0) {
                     for (const progress of components.progress) {
-                        componentsArray.push({
+                        const progressComponent: UIComponent = {
                             kind: 'progress',
-                            ...(progress.text && { text: progress.text }),
-                        });
+                        };
+                        if (progress.text) {
+                            progressComponent.text = progress.text;
+                        }
+                        componentsArray.push(progressComponent);
                     }
                 }
 
                 // Process images
                 if (components.image && components.image.length > 0) {
                     for (const image of components.image) {
-                        componentsArray.push({
+                        const imageComponent: UIComponent = {
                             kind: 'image',
                             image_url: image.imageUrl,
-                            ...(image.label && { label: image.label }),
-                        });
+                        };
+                        if (image.label) {
+                            imageComponent.label = image.label;
+                        }
+                        componentsArray.push(imageComponent);
                     }
                 }
 
                 // Build final UI step
-                const uiStep: Record<string, unknown> = {
+                const uiStep: IDataObject = {
                     session_id: sessionId,
                     message,
                     update: updateMode,
@@ -811,11 +848,17 @@ export class JeeneeUiBuilder implements INodeType {
                 };
 
                 if (Object.keys(metadata).length > 0) {
-                    uiStep.metadata = {
-                        ...(metadata.flowId && { flow_id: metadata.flowId }),
-                        ...(metadata.stepId && { step_id: metadata.stepId }),
-                        ...(metadata.version && { version: metadata.version }),
-                    };
+                    const metadataObj: IDataObject = {};
+                    if (metadata.flowId) {
+                        metadataObj.flow_id = metadata.flowId;
+                    }
+                    if (metadata.stepId) {
+                        metadataObj.step_id = metadata.stepId;
+                    }
+                    if (metadata.version) {
+                        metadataObj.version = metadata.version;
+                    }
+                    uiStep.metadata = metadataObj;
                 }
 
                 returnData.push({
