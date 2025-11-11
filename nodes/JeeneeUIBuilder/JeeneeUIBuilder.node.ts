@@ -8,7 +8,7 @@ import {
 export class JeeneeUIBuilder implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Jeenee UI Builder',
-		name: 'jeeneeUIBuilder',
+		name: 'jeeneeUiBuilder',
 		icon: 'file:jeenee_logo.png',
 		group: ['transform'],
 		version: 1,
@@ -94,61 +94,51 @@ export class JeeneeUIBuilder implements INodeType {
 										name: 'item',
 										displayName: 'Button',
 										values: [
-											{
-												displayName: 'Label',
-												name: 'label',
-												type: 'string',
-												default: '',
-												required: true,
-											},
-											{
-												displayName: 'Type',
-												name: 'type',
-												type: 'options',
-												options: [
+									{
+										displayName: 'Custom ID',
+										name: 'customId',
+										type: 'string',
+										default: '',
+										description: 'Callback data to send when clicked',
+									},
+									{
+										displayName: 'Emoji',
+										name: 'emoji',
+										type: 'string',
+										default: '',
+										description: 'Optional emoji prefix',
+									},
+									{
+										displayName: 'Label',
+										name: 'label',
+										type: 'string',
+										default: '',
+											required:	true,
+									},
+									{
+										displayName: 'Type',
+										name: 'type',
+										type: 'options',
+										options: [
 													{
-														name: 'Callback Button',
-														value: 'callback',
+												name: 'Callback Button',
+												value: 'callback',
 													},
 													{
-														name: 'URL Button',
-														value: 'url',
+												name: 'URL Button',
+												value: 'url',
 													},
 												],
-												default: 'callback',
-											},
-											{
-												displayName: 'Custom ID',
-												name: 'customId',
-												type: 'string',
-												default: '',
-												displayOptions: {
-													show: {
-														type: ['callback'],
-													},
-												},
-												description: 'Callback data to send when clicked',
-											},
-											{
-												displayName: 'URL',
-												name: 'url',
-												type: 'string',
-												default: '',
-												displayOptions: {
-													show: {
-														type: ['url'],
-													},
-												},
-												description: 'URL to open when clicked',
-											},
-											{
-												displayName: 'Emoji',
-												name: 'emoji',
-												type: 'string',
-												default: '',
-												description: 'Optional emoji prefix',
-											},
-										],
+										default: 'callback',
+									},
+									{
+										displayName: 'URL',
+										name: 'url',
+										type: 'string',
+										default: '',
+										description: 'URL to open when clicked',
+									},
+					],
 									},
 								],
 							},
@@ -159,17 +149,65 @@ export class JeeneeUIBuilder implements INodeType {
 						displayName: 'Select Menu',
 						values: [
 							{
-								displayName: 'Custom ID',
-								name: 'customId',
-								type: 'string',
-								default: 'select',
-								required: true,
+						displayName: 'Custom ID',
+						name: 'customId',
+						type: 'string',
+						default: 'select',
+							required:	true,
 							},
 							{
-								displayName: 'Type',
-								name: 'selectType',
-								type: 'options',
-								options: [
+						displayName: 'Max Values',
+						name: 'maxValues',
+						type: 'number',
+						default: 5,
+						description: 'Maximum number of selections allowed',
+							},
+							{
+						displayName: 'Options',
+						name: 'options',
+						type: 'fixedCollection',
+						default: {},
+						options: [
+									{
+										name: 'option',
+										displayName: 'Option',
+											values:	[
+													{
+												displayName: 'Label',
+												name: 'label',
+												type: 'string',
+												default: '',
+													required:	true,
+													},
+													{
+												displayName: 'Value',
+												name: 'value',
+												type: 'string',
+												default: '',
+													required:	true,
+													},
+													{
+												displayName: 'Description',
+												name: 'description',
+												type: 'string',
+												default: '',
+													},
+												]
+									},
+					]
+							},
+							{
+						displayName: 'Placeholder',
+						name: 'placeholder',
+						type: 'string',
+						default: '',
+						description: 'Placeholder text',
+							},
+							{
+						displayName: 'Type',
+						name: 'selectType',
+						type: 'options',
+						options: [
 									{
 										name: 'Single Select',
 										value: 'single',
@@ -178,102 +216,46 @@ export class JeeneeUIBuilder implements INodeType {
 										name: 'Multi Select',
 										value: 'multi',
 									},
-								],
-								default: 'single',
+					],
+						default: 'single',
 							},
-							{
-								displayName: 'Max Values',
-								name: 'maxValues',
-								type: 'number',
-								default: 5,
-								displayOptions: {
-									show: {
-										selectType: ['multi'],
-									},
-								},
-								description: 'Maximum number of selections allowed',
-							},
-							{
-								displayName: 'Placeholder',
-								name: 'placeholder',
-								type: 'string',
-								default: '',
-								description: 'Placeholder text',
-							},
-							{
-								displayName: 'Options',
-								name: 'options',
-								type: 'fixedCollection',
-								typeOptions: {
-									multipleValues: true,
-								},
-								default: {},
-								options: [
-									{
-										name: 'option',
-										displayName: 'Option',
-										values: [
-											{
-												displayName: 'Label',
-												name: 'label',
-												type: 'string',
-												default: '',
-												required: true,
-											},
-											{
-												displayName: 'Value',
-												name: 'value',
-												type: 'string',
-												default: '',
-												required: true,
-											},
-											{
-												displayName: 'Description',
-												name: 'description',
-												type: 'string',
-												default: '',
-											},
-										],
-									},
-								],
-							},
-						],
+					],
 					},
 					{
 						name: 'textEdit',
 						displayName: 'Text Input',
 						values: [
 							{
-								displayName: 'Custom ID',
-								name: 'customId',
-								type: 'string',
-								default: 'text',
-								required: true,
+						displayName: 'Button Label',
+						name: 'saveLabel',
+						type: 'string',
+						default: '✏️	Edit Text',
 							},
 							{
-								displayName: 'Title',
-								name: 'title',
-								type: 'string',
-								default: 'Enter text',
-								required: true,
+						displayName: 'Custom ID',
+						name: 'customId',
+						type: 'string',
+						default: 'text',
+							required:	true,
 							},
 							{
-								displayName: 'Button Label',
-								name: 'saveLabel',
-								type: 'string',
-								default: '✏️ Edit Text',
+						displayName: 'Max Length',
+						name: 'maxLength',
+						type: 'number',
+						default: 1000
 							},
 							{
-								displayName: 'Placeholder',
-								name: 'placeholder',
-								type: 'string',
-								default: '',
+						displayName: 'Placeholder',
+						name: 'placeholder',
+						type: 'string',
+						default: '',
 							},
 							{
-								displayName: 'Max Length',
-								name: 'maxLength',
-								type: 'number',
-								default: 1000,
+						displayName: 'Title',
+						name: 'title',
+						type: 'string',
+						default: 'Enter text',
+							required:	true,
 							},
 						],
 					},
@@ -282,57 +264,47 @@ export class JeeneeUIBuilder implements INodeType {
 						displayName: 'File Upload',
 						values: [
 							{
-								displayName: 'Custom ID',
-								name: 'customId',
-								type: 'string',
-								default: 'file',
-								required: true,
+						displayName: 'Allow Multiple Files',
+						name: 'multiple',
+						type: 'boolean',
+						default: false,
 							},
 							{
-								displayName: 'Title',
-								name: 'title',
-								type: 'string',
-								default: 'Upload file',
+						displayName: 'Button Label',
+						name: 'buttonLabel',
+						type: 'string',
+						default: '📎	Загрузить	файл',
 							},
 							{
-								displayName: 'Button Label',
-								name: 'buttonLabel',
-								type: 'string',
-								default: '📎 Загрузить файл',
+						displayName: 'Custom ID',
+						name: 'customId',
+						type: 'string',
+						default: 'file',
+							required:	true,
 							},
 							{
-								displayName: 'Allow Multiple Files',
-								name: 'multiple',
-								type: 'boolean',
-								default: false,
+						displayName: 'Max Files',
+						name: 'maxFiles',
+						type: 'number',
+						default: 5
 							},
 							{
-								displayName: 'Min Files',
-								name: 'minFiles',
-								type: 'number',
-								default: 1,
-								displayOptions: {
-									show: {
-										multiple: [true],
-									},
-								},
+						displayName: 'Max Size (MB)',
+						name: 'maxSizeMb',
+						type: 'number',
+						default: 50
 							},
 							{
-								displayName: 'Max Files',
-								name: 'maxFiles',
-								type: 'number',
-								default: 5,
-								displayOptions: {
-									show: {
-										multiple: [true],
-									},
-								},
+						displayName: 'Min Files',
+						name: 'minFiles',
+						type: 'number',
+						default: 1
 							},
 							{
-								displayName: 'Max Size (MB)',
-								name: 'maxSizeMb',
-								type: 'number',
-								default: 50,
+						displayName: 'Title',
+						name: 'title',
+						type: 'string',
+						default: 'Upload file',
 							},
 						],
 					},
@@ -583,6 +555,7 @@ export class JeeneeUIBuilder implements INodeType {
 				],
 			},
 		],
+		usableAsTool: true,
 	};
 
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {

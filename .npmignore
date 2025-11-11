@@ -1,0 +1,30 @@
+# Source files
+nodes/**/*.ts
+!nodes/**/*.node.ts
+credentials/**/*.ts
+
+# Config files
+tsconfig.json
+eslint.config.mjs
+
+# Development files
+.git
+.gitignore
+.vscode
+.idea
+
+# Node modules
+node_modules
+
+# Documentation templates
+README_TEMPLATE.md
+CHANGELOG.md
+CODE_OF_CONDUCT.md
+
+# Build artifacts
+*.log
+npm-debug.log*
+.DS_Store
+
+# Keep only dist folder for production
+

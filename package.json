@@ -3,9 +3,16 @@
 	"version": "0.1.0",
 	"description": "Build Telegram UI components using DSL for Telegram bots",
 	"license": "MIT",
-	"homepage": "",
+	"homepage": "https://github.com/akainq/n8n-nodes-jeenee-ui#readme",
 	"keywords": [
-		"n8n-community-node-package"
+		"n8n-community-node-package",
+		"n8n",
+		"telegram",
+		"telegram-bot",
+		"ui-builder",
+		"jeenee",
+		"dsl",
+		"bot-framework"
 	],
 	"author": {
 		"name": "Aleksei",
@@ -32,7 +39,7 @@
 		"strict": true,
 		"credentials": [],
 		"nodes": [
-			"dist/nodes/JeeneeUIBuilder/JeeneeUIBuilder.node.js"
+			"dist/nodes/JeeneeUiBuilder/JeeneeUiBuilder.node.js"
 		]
 	},
 	"devDependencies": {
